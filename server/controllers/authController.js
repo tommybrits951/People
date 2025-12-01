@@ -1,0 +1,52 @@
+const User = require("../models/User")
+const bcrypt = require('bcrypt')
+const jwt = require("jsonwebtoken")
+
+
+function buildToken(user, exp) {
+    const {first_name, last_name, user_id, email, dob, gender, postal} = user
+    const payload = {
+        first_name,
+        last_name,
+        user_id,
+        email,
+        dob,
+        gender,
+        postal        
+    }
+    const options = {
+        expiresIn: exp
+    }
+    return jwt.sign(payload, process.env.JWT_SECRET, options)
+}
+
+
+
+async function login(req, res) {
+    try {
+        const {email, password} = req.body;
+        if (!email || !password) {
+            return res.status(400).json({message: "All fields required."})
+        }
+        const user = await User.getByEmail(email)
+        const validated = bcrypt.compareSync(password, user.password)
+        if (!user || !validated) {
+            return res.status(401).json({message: "Email or Password incorrect."})
+        }
+        const refreshToken = buildToken(user, "1d")
+        const accessToken = buildToken(user, "1h")
+        res.cookie("jwt", refreshToken, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "None"    
+        })
+        res.json(accessToken)
+
+    } catch (err) {
+        return res.status(500).json({message: "Server Error."})
+    }
+}
+
+module.exports = {
+    login
+}
