@@ -47,6 +47,32 @@ async function login(req, res) {
     }
 }
 
+async function refresh(req, res) {
+    try {
+        const refreshToken = req.cookies.jwt
+        if (!refreshToken) {
+            return res.status(401).json({message: "Unauthorized."})
+        }
+        const decoded = jwt.verify(refreshToken, process.env.JWT_SECRET)
+        const user = await User.getByEmail(decoded.email)
+        const accessToken = buildToken(user, "1h")
+        res.json(accessToken)
+    }
+    catch (err) {
+        return res.status(500).json({message: "Server Error."})
+    }
+}
+
+async function decode(req, res) {
+    try {
+        const accessToken = req.cookies.jwt
+        if (!accessToken) {
+            return res.status(401).json({message: "Unauthorized."})
+        }
+    }
+}
+
 module.exports = {
-    login
+    login,
+    refresh
 }

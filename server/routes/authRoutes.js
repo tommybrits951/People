@@ -3,6 +3,6 @@ const controller = require("../controllers/authController")
 
 
 router.post("/", controller.login)
-
-
+router.get("/", controller.refresh)
+router.get("/decode")
 module.exports = router
