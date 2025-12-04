@@ -1,46 +1,8 @@
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
-const fs = require("fs");
-const fsPromises = require("fs/promises");
-const path = require("path");
-const sharp = require("sharp");
+const path = require("path")
+const { createOutput, extractImage, saveImage } = require("../config/imageConfig");
 
-function createOutput(img) {
-  if (fs.existsSync("output.png")) {
-    return fsPromises.appendFile("output.png", img.data);
-  } else {
-    return fsPromises.writeFile("output.png", img.data);
-  }
-}
-
-async function extractImage(x, y, width, height) {
-  const buff = await sharp("output.png")
-    .extract({
-      left: parseInt(x),
-      top: parseInt(y),
-      width: parseInt(width),
-      height: parseInt(height),
-    })
-    .toBuffer();
-  return buff;
-}
-async function saveImage(buff, email) {
-  if (
-    !fs.existsSync(
-      path.join(__dirname, "..", "images", "profile", `${email}.png`)
-    )
-  ) {
-    fsPromises.writeFile(
-      path.join(__dirname, "..", "images", "profile", `${email}.png`),
-      buff
-    );
-  } else {
-    fsPromises.appendFile(
-      path.join(__dirname, "..", "images", "profile", `${email}.png`),
-      buff
-    );
-  }
-}
 
 async function registerUser(req, res) {
   try {
@@ -75,10 +37,12 @@ async function registerUser(req, res) {
     if (!response) {
       return res.status(500).json({ message: "Database error." });
     }
+
+    
     await createOutput(img);
     const extractedImg = await extractImage(x, y, width, height);
-    await saveImage(extractedImg, email);
-
+    await saveImage(path.join(__dirname, "..", "images", "profile", `${email}.png`), extractedImg);
+      
     return res.status(201).json({ message: "User registered successfully." });
   } catch (err) {
     console.error("registerUser error:", err);
@@ -89,17 +53,28 @@ async function registerUser(req, res) {
 async function getUsers(req, res) {
   try {
     const users = await User.getAllUsers();
-    const response = users.map((user) => {
-      const obj = { ...user, password: undefined };
-      return obj;
-    });
-    return res.status(200).json(response);
+    
+    return res.status(200).json(users);
   } catch (err) {
     return res.status(500).json({ message: "Server error." });
   }
 }
 
+
+async function getUser(req, res) {
+  try {
+    const {user_id} = req.params;
+
+    const user = await User.getById(user_id)
+    if (!user) {
+      return res.status(404).json({message: "Could not find user."})
+    }
+  } catch (err) {
+    return res.status(500).json({message: err.message || "Server error."})
+  }
+}
 module.exports = {
   registerUser,
   getUsers,
+  getUser
 };

@@ -1,7 +1,7 @@
 import React, {useContext, useState} from 'react'
 import { UserContext } from '../context/UserContext'
 import axios from '../utils/axios'
-import { useNavigate } from 'react-router'
+import { useNavigate, Link } from 'react-router'
 
 export default function Login() {
   // Get the login form state from UserContext
@@ -78,6 +78,13 @@ export default function Login() {
           </button>
         </div>
       </form>
+        {/* Quick link for new users to go to the register page. Using Link ensures
+          the app's router handles the navigation without a full page refresh. */}
+      <p className="text-sm mt-3">
+        Don't have an account?{' '}
+        {/* Link provides semantic navigation for accessibility and SEO; it performs client-side routing similar to navigate without a full refresh */}
+        <Link to="/register" className="text-blue-600 hover:underline">Create one</Link>
+      </p>
     </section>
   )
 }

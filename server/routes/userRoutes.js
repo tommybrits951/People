@@ -1,10 +1,11 @@
 const router = require('express').Router();
-const userController = require('../controllers/userController');
+const controller = require('../controllers/userController');
 const {checkFields} = require("../middleware/checkFields");
 const {checkAuth} = require("../middleware/checkAuth");
 // Register User
-router.post('/register', checkFields, userController.registerUser);
+router.post('/register', checkFields, controller.registerUser);
 // Get All Users
-router.get('/', checkAuth, userController.getUsers);
-
+router.get('/', checkAuth, controller.getUsers);
+// Get single user
+router.get("/:user_id", checkAuth, controller.getUser)
 module.exports = router;

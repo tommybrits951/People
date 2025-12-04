@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken")
 function buildToken(user, exp) {
     const {first_name, last_name, user_id, email, dob, gender, postal} = user
     const payload = {
+
         first_name,
         last_name,
         user_id,
@@ -65,14 +66,22 @@ async function refresh(req, res) {
 
 async function decode(req, res) {
     try {
-        const accessToken = req.cookies.jwt
+        const accessToken = req.headers.authorization
+        const auth = accessToken.split(" ")[1]
+        
+        const decoded = jwt.decode(auth, process.env.JWT_SECRET)
         if (!accessToken) {
             return res.status(401).json({message: "Unauthorized."})
         }
+        
+        res.json(decoded)
+    } catch (err) {
+
     }
 }
 
 module.exports = {
     login,
-    refresh
+    refresh,
+    decode
 }
