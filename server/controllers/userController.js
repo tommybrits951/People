@@ -20,8 +20,6 @@ async function registerUser(req, res) {
       dob,
     } = req.body;
     const { img } = req.files;
-    console.log(req.body);
-    console.log(req.files);
     const hashed = bcrypt.hashSync(password, 10);
     const joined = new Date();
     const response = await User.insertUser({
@@ -64,11 +62,12 @@ async function getUsers(req, res) {
 async function getUser(req, res) {
   try {
     const {user_id} = req.params;
-
     const user = await User.getById(user_id)
+    console.log(user)
     if (!user) {
       return res.status(404).json({message: "Could not find user."})
     }
+    res.json(user)
   } catch (err) {
     return res.status(500).json({message: err.message || "Server error."})
   }

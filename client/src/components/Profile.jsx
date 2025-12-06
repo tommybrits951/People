@@ -1,12 +1,28 @@
 import { useState, useContext, useEffect } from "react";
 import {format} from 'date-fns'
 import { UserContext } from "../context/UserContext";
+import { useParams } from "react-router";
+import axios from '../utils/axios'
 
 export default function Profile() {
-  const { auth, user } = useContext(UserContext);
+  const [user, setUser] = useState(null)
+  const {user_id} = useParams()
+  const {auth} = useContext(UserContext)
 
-  if (!user) {
-    return <p className="absolute top-32">Loading</p>
+  useEffect(() => {
+    axios.get(`/users/${user_id}`, {
+      headers: {
+        Authorization: `Bearer ${auth}`
+      }
+    })
+    .then(res => {
+      setUser(res.data)
+    })
+    .catch(err => console.log(err))
+    
+  }, [auth, user_id])
+  if (user === null) {
+    return <p className="col-start-3 col-end-7 absolute top-32">Loading</p>
   }
 
   return (

@@ -15,6 +15,11 @@ exports.up = function(knex) {
     tbl.bigInteger("parent_comment_id").unsigned().references("comment_id").inTable("comments")
     tbl.dateTime("time_commented").notNullable()
   })
+  .createTable("post_images", tbl => {
+    tbl.bigIncrements(post_image_id).primary()
+    tbl.bigInteger("post_id").unsigned().references("post_id").inTable("posts")
+    tbl.string("filename").notNullable()
+  })
 };
 
 /**
@@ -22,5 +27,5 @@ exports.up = function(knex) {
  * @returns { Promise<void> }
  */
 exports.down = function(knex) {
-  return knex.schema.dropTableIfExists("comments").dropTableIfExists("posts")
+  return knex.schema.dropTableIfExists("post_images").dropTableIfExists("comments").dropTableIfExists("posts")
 };

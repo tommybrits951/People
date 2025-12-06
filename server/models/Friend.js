@@ -1,5 +1,5 @@
 const db = require("../config/DBconfig")
-
+const pool = require('../config/PGconfig')
 
 async function getById(id) {
     const result = await db("friends").where("friend_id", id).first()
@@ -15,12 +15,9 @@ async function insertRequest(request) {
 
 async function getAll(user_id) {
     
-    const result = await db("friends")
-        .where(function() {
-            this.where("friend_1_id", user_id).orWhere("friend_2_id", user_id)
-        })
-        .andWhere("status", "accepted")
-    return result
+    return pool.query(`select * from users as u 
+left join friends as f on u.user_id in (friend_1_id, friend_2_id)
+where ${user_id} in (friend_1_id, friend_2_id) and user_id != ${user_id} and status = 'accepted';`)
 }
 async function accept(friend_1_id, friend_2_id) {
     

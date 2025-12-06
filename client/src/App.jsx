@@ -7,7 +7,7 @@ import PublicLayout from "./layouts/PublicLayout";
 import PrivateLayout from "./layouts/PrivateLayout";
 import Login from "./components/Login";
 import Profile from "./components/Profile";
-
+import Posts from "./components/Posts";
 function App() {
   const {user} = useContext(UserContext)
   if (user) {
@@ -20,7 +20,8 @@ function App() {
           <Route element={<Login />} path="/" />
         </Route>
         <Route element={<PrivateLayout />}>
-          <Route element={<Profile />} path="/home" />
+          <Route element={<Posts />} path="/home" />
+          <Route element={<Profile />} path="/profile/:user_id" />
         </Route>
       </Routes>
     </main>

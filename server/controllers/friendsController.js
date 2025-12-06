@@ -20,6 +20,22 @@ async function sendRequest(req, res) {
     }
 }
 
+
+async function getFriendsList(req, res) {
+    try {
+        const {user} = req;
+        const {user_id} = user;
+        const friends = await Friend.getAll(user_id)
+        if (!friends) {
+            return res.status(400).json({message: "You don't have friends."})
+        }
+        res.status(200).json(friends.rows)
+    } catch (err) {
+        return res.status(500).json({message: err.message || "Server error."})
+    }
+}
+
 module.exports = {
-    sendRequest
+    sendRequest,
+    getFriendsList
 }

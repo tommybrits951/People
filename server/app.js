@@ -19,6 +19,7 @@ app.use("/images", express.static(path.join(__dirname, "images")))
 app.use("/auth", require("./routes/authRoutes"))
 app.use("/users", require("./routes/userRoutes"));
 app.use("/friends", require("./routes/friendsRoutes"))
+app.use("/posts", require("./routes/postRoutes"))
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
