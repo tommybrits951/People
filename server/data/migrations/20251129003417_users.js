@@ -13,7 +13,7 @@ exports.up = function(knex) {
     tbl.dateTime("joined").notNullable()
     tbl.string("email", 100).notNullable().unique()
     tbl.string("password").notNullable()
-    
+    tbl.string("bio")
   })
 };
 

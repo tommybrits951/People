@@ -1,6 +1,8 @@
 import {useContext, useEffect, useState} from 'react'
 import { UserContext } from '../context/UserContext'
 import axios from '../utils/axios'
+import {Link} from "react-router"
+import { FaUser } from 'react-icons/fa'
 export default function FriendsList() {
   const [friends, setFriends] = useState([])
   const {auth} = useContext(UserContext)
@@ -20,7 +22,7 @@ export default function FriendsList() {
     return <p>Loading...</p>
   }
   return (
-    <ul className='col-start-1 col-end-3 mt-10 border-2 bg-stone-600'>
+    <ul className='w-2/10 h-full mt-10 border-2 bg-stone-600'>
       {friends.map((friend, idx) => {
         return (
           <li key={idx} className='border-b-2 p-3 flex justify-between text-white'>

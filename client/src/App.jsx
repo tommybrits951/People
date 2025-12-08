@@ -13,7 +13,7 @@ function App() {
   if (user) {
 
     return (
-      <main>
+      <main className="h-full">
       <Routes>
         <Route element={<PublicLayout />}>
           <Route element={<Register />} path="/register" />

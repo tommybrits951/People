@@ -12,7 +12,7 @@ export default function PrivateLayout() {
   }
 
   return(
-    <div className={`absolute h-full w-full grid grid-cols-8`}>
+    <div className={`absolute h-full w-full p-0 overflow-hidden m-0 flex`}>
     <Nav />
     <FriendsList />
     <Outlet />

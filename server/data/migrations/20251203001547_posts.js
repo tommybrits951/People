@@ -5,7 +5,7 @@
 exports.up = function(knex) {
   return knex.schema.createTable("posts", tbl => {
     tbl.bigIncrements("post_id").primary()
-    tbl.string("post").notNullable()
+    tbl.text("post").notNullable()
     tbl.dateTime('time_posted').notNullable()
     tbl.bigInteger("user_id").unsigned().references("user_id").inTable("users")
   })
@@ -16,7 +16,7 @@ exports.up = function(knex) {
     tbl.dateTime("time_commented").notNullable()
   })
   .createTable("post_images", tbl => {
-    tbl.bigIncrements(post_image_id).primary()
+    tbl.bigIncrements("post_image_id").primary()
     tbl.bigInteger("post_id").unsigned().references("post_id").inTable("posts")
     tbl.string("filename").notNullable()
   })
