@@ -1,4 +1,4 @@
-import {useEffect, useState, useCallback, useContext} from 'react'
+import {useEffect, useState, useContext} from 'react'
 import PostForm from '../features/PostForm'
 import { UserContext } from '../context/UserContext'
 import axios from '../utils/axios'

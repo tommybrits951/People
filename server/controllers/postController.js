@@ -2,10 +2,11 @@ const User = require('../models/User')
 const Post = require("../models/Post")
 const fsPromises = require('fs/promises')
 const path = require("path")
-
+const {format} = require('date-fns')
 async function post(req, res) {
     try {
         const {user_id, post} = req.body;
+        console.log(req.body)
         if (!user_id) {
             return res.status(400).json({message: "Missing user_id."})
         }
@@ -13,7 +14,8 @@ async function post(req, res) {
             return res.status(400).json({message: "Missing post."})
         }
         const time_posted = new Date()
-        const result = await Post.insertPost({post, user_id, time_posted})
+        
+        const result = await Post.insertPost({...req.body, time_posted})
         res.json(result)
 
     } catch (err) {

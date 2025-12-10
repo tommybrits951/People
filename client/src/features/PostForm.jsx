@@ -118,7 +118,7 @@ export default function PostForm({ onPostSuccess }) {
       });
 
       // Submit to backend with Authorization header
-      const response = await axios.post("/posts", formData, {
+      const response = await axios.post("/posts", formData, { 
         headers: {
           Authorization: `Bearer ${auth}`,
           // Note: Do NOT set Content-Type; browser will set it with multipart boundary
@@ -126,7 +126,7 @@ export default function PostForm({ onPostSuccess }) {
       });
 
       // Clear form on successful submission
-      setSuccess("Post created successfully!");
+      setSuccess(response.data.message);
       setPostText("");
       setImages([]);
       setIsExpanded(false);
