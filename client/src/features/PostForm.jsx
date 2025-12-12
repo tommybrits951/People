@@ -15,7 +15,7 @@ export default function PostForm({ onPostSuccess }) {
   const textareaRef = useRef(null);
   const fileInputRef = useRef(null);
   
-  const { auth, user } = useContext(UserContext);
+  const { auth, user, posts, setPosts } = useContext(UserContext);
 
   // Auto-expand textarea as user types
   useEffect(() => {
@@ -41,31 +41,6 @@ export default function PostForm({ onPostSuccess }) {
   };
 
   // Handle file selection and add to images array
-  const handleFileSelect = (e) => {
-    const files = Array.from(e.target.files || []);
-    const validFiles = files.filter((file) => {
-      // Only accept image files
-      if (!file.type.startsWith("image/")) {
-        setError("Only image files are allowed");
-        return false;
-      }
-      // Optional: limit file size (e.g., 5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        setError("File size must be less than 5MB");
-        return false;
-      }
-      return true;
-    });
-    
-    setImages((prev) => [...prev, ...validFiles]);
-    // Reset file input
-    if (fileInputRef.current) fileInputRef.current.value = null;
-  };
-
-  // Remove image from selection
-  const removeImage = (index) => {
-    setImages((prev) => prev.filter((_, i) => i !== index));
-  };
 
   // Clear all form data
   const handleClear = (e) => {
@@ -79,80 +54,26 @@ export default function PostForm({ onPostSuccess }) {
   };
 
   // Submit post to backend
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    // Validate input
-    if (!postText.trim() && images.length === 0) {
-      setError("Please write something or add an image");
-      return;
-    }
-
-    // Ensure user is authenticated and loaded
-    if (!auth) {
-      setError("Not authenticated. Please log in.");
-      return;
-    }
-
-    if (!user || !user.user_id) {
-      setError("User information not yet loaded. Please try again.");
-      return;
-    }
-
-    setLoading(true);
-    setError("");
-    setSuccess("");
-
-    try {
-      const formData = new FormData();
-      
-      // Append post text (trimmed)
-      formData.append("post", postText.trim());
-      
-      // Append user_id from decoded token user data
-      formData.append("user_id", user.user_id);
-      
-      // Append all selected images (backend handles single or multiple)
-      images.forEach((file) => {
-        formData.append("images", file);
-      });
-
-      // Submit to backend with Authorization header
-      const response = await axios.post("/posts", formData, { 
-        headers: {
-          Authorization: `Bearer ${auth}`,
-          // Note: Do NOT set Content-Type; browser will set it with multipart boundary
-        },
-      });
-
-      // Clear form on successful submission
-      setSuccess(response.data.message);
-      setPostText("");
-      setImages([]);
-      setIsExpanded(false);
-      if (fileInputRef.current) fileInputRef.current.value = null;
-
-      // Trigger callback to refresh posts list (parent component responsibility)
-      if (onPostSuccess) onPostSuccess();
-
-      // Auto-clear success message after 3 seconds
-      setTimeout(() => setSuccess(""), 3000);
-    } catch (err) {
-      const errorMsg =
-        err?.response?.data?.message ||
-        err?.message ||
-        "Failed to create post";
-      setError(errorMsg);
-      console.error("Post submission error:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  function handleSubmit() {
+    setLoading(true)
+    const pkg = new FormData()
+    pkg.append("user_id", user.user_id)
+    pkg.append("post", postText)
+    axios.post("/posts", pkg, {
+      headers: {
+        Authorization: `Bearer ${auth}`
+      }
+    })
+    .then(res => {
+      console.log(res.data)
+      setPosts([res.data, ...posts])
+    })
+    .catch(err => console.log(err))
+  }
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-full bg-white rounded-lg shadow-md border border-gray-200 p-4 mb-6"
+      className="w-full max-w-2xl mx-auto bg-white/10 backdrop-blur-xl rounded-2xl shadow-lg border border-white/20 p-6 mb-6"
     >
       {/* Textarea */}
       <textarea
@@ -162,7 +83,7 @@ export default function PostForm({ onPostSuccess }) {
         onFocus={handleFocus}
         onBlur={handleBlur}
         placeholder="What's on your mind?"
-        className={`w-full p-3 border border-gray-300 rounded-lg resize-none overflow-hidden outline-none transition-all ${
+        className={`w-full p-4 bg-white/5 border border-white/20 rounded-xl resize-none overflow-hidden outline-none text-white placeholder-gray-500 focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all ${
           isExpanded ? "min-h-24" : "h-12"
         }`}
       />
@@ -175,12 +96,12 @@ export default function PostForm({ onPostSuccess }) {
               <img
                 src={URL.createObjectURL(file)}
                 alt={`preview-${index}`}
-                className="w-full h-24 object-cover rounded-lg"
+                className="w-full h-24 object-cover rounded-lg border border-white/20"
               />
               <button
                 type="button"
                 onClick={() => removeImage(index)}
-                className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
               >
                 <FaX className="w-3 h-3" />
               </button>
@@ -191,12 +112,12 @@ export default function PostForm({ onPostSuccess }) {
 
       {/* Error/Success Messages */}
       {error && (
-        <div className="mt-3 p-3 bg-red-100 text-red-700 rounded-lg text-sm">
+        <div className="mt-3 p-3 bg-red-500/10 text-red-400 rounded-lg text-sm border border-red-500/30">
           {error}
         </div>
       )}
       {success && (
-        <div className="mt-3 p-3 bg-green-100 text-green-700 rounded-lg text-sm">
+        <div className="mt-3 p-3 bg-green-500/10 text-green-400 rounded-lg text-sm border border-green-500/30">
           {success}
         </div>
       )}
@@ -204,32 +125,15 @@ export default function PostForm({ onPostSuccess }) {
       {/* Form Controls - Visible when expanded */}
       {isExpanded && (
         <div className="mt-4 flex justify-end items-center gap-3">
-          {/* File Input (hidden) */}
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            multiple
-            onChange={handleFileSelect}
-            className="hidden"
-          />
-
-          {/* Attach Images Button */}
-          <button
-            type="button"
-            onClick={() => fileInputRef.current?.click()}
-            className="flex items-center gap-2 px-3 py-2 text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
-            title="Attach images"
-          >
-            <FaPaperclip className="w-4 h-4" />
-            Attach
-          </button>
+          
+          
+          
 
           {/* Clear Button */}
           <button
             type="button"
             onClick={handleClear}
-            className="px-4 py-2 text-gray-700 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors"
+            className="px-4 py-2 text-gray-300 bg-white/5 hover:bg-white/10 border border-white/20 rounded-lg transition-colors"
           >
             Clear
           </button>
@@ -238,7 +142,7 @@ export default function PostForm({ onPostSuccess }) {
           <button
             type="submit"
             disabled={loading}
-            className="flex items-center gap-2 px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 rounded-lg transition-colors"
+            className="flex items-center gap-2 px-4 py-2 text-white bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg transition-all font-semibold"
           >
             <IoSend className="w-4 h-4" />
             {loading ? "Posting..." : "Post"}

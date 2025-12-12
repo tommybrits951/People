@@ -80,8 +80,22 @@ async function decode(req, res) {
     }
 }
 
+function logout(req, res) {
+    try {
+        res.clearCookie("jwt", {
+            httpOnly: true,
+            secure: true,
+            sameSite: "None"
+        })
+        res.json({message: "Logged out successfully."})
+    } catch (err) {
+        return res.status(500).json({message: "Server Error."})
+    }
+}
+
 module.exports = {
     login,
     refresh,
-    decode
+    decode,
+    logout
 }

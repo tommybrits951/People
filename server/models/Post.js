@@ -7,7 +7,7 @@ function getById(post_id) {
 }
 
 async function getAll() {
-    return await pg.query(`select p.*, u.first_name, u.last_name, u.email from posts as p left join users as u on p.user_id = u.user_id order by p.time_posted;`)
+    return await pg.query(`select p.*, u.first_name, u.last_name, u.email from posts as p left join users as u on p.user_id = u.user_id order by p.time_posted desc;`)
 }
 async function insertPost(post) {
     const result = await db("posts").insert(post)

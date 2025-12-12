@@ -15,7 +15,7 @@ async function post(req, res) {
         }
         const time_posted = new Date()
         
-        const result = await Post.insertPost({...req.body, time_posted})
+        const result = await Post.insertPost({user_id: parseInt(user_id), post, time_posted})
         res.json(result)
 
     } catch (err) {

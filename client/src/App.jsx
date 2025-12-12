@@ -8,12 +8,11 @@ import PrivateLayout from "./layouts/PrivateLayout";
 import Login from "./components/Login";
 import Profile from "./components/Profile";
 import Posts from "./components/Posts";
-function App() {
-  const {user} = useContext(UserContext)
-  if (user) {
+import Users from "./components/Users";
 
-    return (
-      <main className="h-full">
+function App() {
+  return (
+    <main className="h-full">
       <Routes>
         <Route element={<PublicLayout />}>
           <Route element={<Register />} path="/register" />
@@ -22,11 +21,11 @@ function App() {
         <Route element={<PrivateLayout />}>
           <Route element={<Posts />} path="/home" />
           <Route element={<Profile />} path="/profile/:user_id" />
+          <Route element={<Users />} path="/users" />
         </Route>
       </Routes>
     </main>
-  )
-}
+  );
 }
 
 export default App;

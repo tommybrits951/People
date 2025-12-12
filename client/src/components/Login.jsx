@@ -4,20 +4,17 @@ import axios from '../utils/axios'
 import { useNavigate, Link } from 'react-router'
 
 export default function Login() {
-  // Get the login form state from UserContext
   const { loginForm, setLoginForm, initLogin } = useContext(UserContext)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
   const navigate = useNavigate()
 
-  // Generic handler updates the login form fields by name
   const updateField = (e) => {
     const { name, value } = e.target
     setLoginForm(prev => ({ ...prev, [name]: value }))
   }
 
-  // Basic client-side validation before sending to the server
   const validate = () => {
     setError('')
     if (!loginForm.email || !loginForm.password) {
@@ -27,7 +24,6 @@ export default function Login() {
     return true
   }
 
-  // Submit handler: send credentials to backend and process result
   const handleSubmit = async (e) => {
     e.preventDefault()
     setSuccess('')
@@ -35,23 +31,17 @@ export default function Login() {
     setLoading(true)
     setError('')
     try {
-      // POST /auth - backend sets an httpOnly refresh cookie and returns an access token
       const res = await axios.post('/auth', loginForm)
-      // The server responds with an access token in plain text (or JSON string)
       const token = res?.data
       if (token) {
-        // Save access token locally for use in client-side requests. Keep in mind
-        // the refresh token is stored in a secure cookie (httpOnly), which is managed automatically.
         localStorage.setItem('accessToken', token)
         setSuccess('Logged in successfully')
-        // Reset the login form in context and navigate to the home route
         setLoginForm(initLogin)
-        navigate('/')
+        navigate('/home')
       } else {
         setError('Login failed. No token received from server.')
       }
     } catch (err) {
-      // Show readable server message when available
       setError(err?.response?.data?.message || 'Server error')
     } finally {
       setLoading(false)
@@ -59,32 +49,51 @@ export default function Login() {
   }
 
   return (
-    <section className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-semibold mb-4">Login</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium mb-1">Email</label>
-          <input name="email" type="email" value={loginForm.email} onChange={updateField} className="w-full px-3 py-2 border rounded" />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Password</label>
-          <input name="password" type="password" value={loginForm.password} onChange={updateField} className="w-full px-3 py-2 border rounded" />
-        </div>
-        <div className="flex items-center justify-between">
-          <div className="text-sm text-red-600">{error}</div>
-          <div className="text-sm text-green-600">{success}</div>
-          <button disabled={loading} className="px-4 py-2 bg-blue-600 text-white rounded disabled:opacity-60">
-            {loading ? 'Signing in...' : 'Sign in'}
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center px-4">
+      <section className="w-full max-w-md bg-white/10 backdrop-blur-xl rounded-2xl shadow-2xl p-8 border border-white/20">
+        <h2 className="text-4xl font-bold mb-2 bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">Welcome Back</h2>
+        <p className="text-gray-300 mb-8">Sign in to your account</p>
+        
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div>
+            <label className="block text-sm font-semibold text-gray-300 mb-2">Email Address</label>
+            <input 
+              name="email" 
+              type="email" 
+              value={loginForm.email} 
+              onChange={updateField} 
+              className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-colors" 
+              placeholder="you@example.com"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-semibold text-gray-300 mb-2">Password</label>
+            <input 
+              name="password" 
+              type="password" 
+              value={loginForm.password} 
+              onChange={updateField} 
+              className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-colors" 
+              placeholder="••••••••"
+            />
+          </div>
+
+          {error && <div className="text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg p-3">{error}</div>}
+          {success && <div className="text-sm text-green-400 bg-green-500/10 border border-green-500/20 rounded-lg p-3">{success}</div>}
+
+          <button 
+            disabled={loading} 
+            className="w-full px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-600 text-white font-semibold rounded-lg hover:from-purple-600 hover:to-pink-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 cursor-pointer shadow-lg"
+          >
+            {loading ? 'Signing in...' : 'Sign In'}
           </button>
-        </div>
-      </form>
-        {/* Quick link for new users to go to the register page. Using Link ensures
-          the app's router handles the navigation without a full page refresh. */}
-      <p className="text-sm mt-3">
-        Don't have an account?{' '}
-        {/* Link provides semantic navigation for accessibility and SEO; it performs client-side routing similar to navigate without a full refresh */}
-        <Link to="/register" className="text-blue-600 hover:underline">Create one</Link>
-      </p>
-    </section>
+        </form>
+
+        <p className="text-sm text-gray-300 mt-6 text-center">
+          Don't have an account?{' '}
+          <Link to="/register" className="text-purple-400 hover:text-purple-300 font-semibold transition-colors cursor-pointer">Create one</Link>
+        </p>
+      </section>
+    </div>
   )
 }
