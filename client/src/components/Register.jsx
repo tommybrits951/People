@@ -124,15 +124,12 @@ export default function Register() {
   }
 
   
-  const handleCheckboxChange = (e) => {
-    const { name, checked } = e.target
-    setRegisterForm(prev => ({ ...prev, [name]: checked }))
-  }
+  
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-8 px-4">
+    <div className="min-h-screen bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 py-8 px-4">
       <section className="max-w-4xl mx-auto bg-white/10 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 p-8">
-        <h2 className="text-4xl font-bold mb-2 bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">Create an Account</h2>
+        <h2 className="text-4xl font-bold mb-2 bg-linear-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">Create an Account</h2>
         <p className="text-gray-300 mb-8">Join our community today</p>
         <form onSubmit={handleSubmit} className="space-y-8">
         
@@ -202,7 +199,7 @@ export default function Register() {
 
         {/* LOCATION SECTION */}
         <div className="bg-white/5 rounded-xl p-6 border border-white/10 mt-6">
-          <h3 className="text-xl font-semibold mb-4 bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">Location</h3>
+          <h3 className="text-xl font-semibold mb-4 bg-linear-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">Location</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">Postal Code <span className="text-red-400">*</span></label>
@@ -225,13 +222,13 @@ export default function Register() {
           </div>
           <div className="mt-4">
             <label className="block text-sm font-medium text-gray-300 mb-2">Full Address</label>
-            <input name="location" value={registerForm.location} onChange={updateField} placeholder="Street address, apartment, etc." className="w-full px-4 py-2 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-colors" />
+            <input name="street" value={registerForm.street} onChange={updateField} placeholder="Street address, apartment, etc." className="w-full px-4 py-2 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-colors" />
           </div>
         </div>
 
         {/* PROFESSIONAL SECTION */}
         <div className="bg-white/5 rounded-xl p-6 border border-white/10 mt-6">
-          <h3 className="text-xl font-semibold mb-4 bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Professional Information</h3>
+          <h3 className="text-xl font-semibold mb-4 bg-linear-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Professional Information</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">Occupation</label>
@@ -252,17 +249,12 @@ export default function Register() {
               <input type="url" name="website" value={registerForm.website} onChange={updateField} placeholder="https://example.com" className="w-full px-4 py-2 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-colors" />
             </div>
           </div>
-          <div>
-            <label className="flex items-center mt-4">
-              <input type="checkbox" name="looking_for_work" checked={registerForm.looking_for_work} onChange={handleCheckboxChange} className="w-4 h-4 rounded bg-white/5 border border-white/20 text-purple-600 focus:ring-purple-500 cursor-pointer" />
-              <span className="text-sm text-gray-300 ml-2">I'm open to work opportunities</span>
-            </label>
-          </div>
+          
         </div>
 
         {/* SOCIAL MEDIA SECTION */}
         <div className="bg-white/5 rounded-xl p-6 border border-white/10 mt-6">
-          <h3 className="text-xl font-semibold mb-4 bg-gradient-to-r from-pink-400 to-pink-600 bg-clip-text text-transparent">Social Media (Optional)</h3>
+          <h3 className="text-xl font-semibold mb-4 bg-linear-to-r from-pink-400 to-pink-600 bg-clip-text text-transparent">Social Media (Optional)</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">Facebook</label>
@@ -291,7 +283,7 @@ export default function Register() {
 
         {/* INTERESTS & SKILLS SECTION */}
         <div className="bg-white/5 rounded-xl p-6 border border-white/10 mt-6">
-          <h3 className="text-xl font-semibold mb-4 bg-gradient-to-r from-green-400 to-green-600 bg-clip-text text-transparent">Interests & Skills</h3>
+          <h3 className="text-xl font-semibold mb-4 bg-linear-to-r from-green-400 to-green-600 bg-clip-text text-transparent">Interests & Skills</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">Interests (comma-separated)</label>
@@ -306,7 +298,7 @@ export default function Register() {
 
         {/* PASSWORD SECTION */}
         <div className="bg-white/5 rounded-xl p-6 border border-white/10 mt-6">
-          <h3 className="text-xl font-semibold mb-4 bg-gradient-to-r from-red-400 to-red-600 bg-clip-text text-transparent">Security</h3>
+          <h3 className="text-xl font-semibold mb-4 bg-linear-to-r from-red-400 to-red-600 bg-clip-text text-transparent">Security</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">Password <span className="text-red-400">*</span></label>
@@ -321,7 +313,7 @@ export default function Register() {
 
         {/* PROFILE IMAGE SECTION */}
         <div className="bg-white/5 rounded-xl p-6 border border-white/10 mt-6">
-          <h3 className="text-xl font-semibold mb-4 bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent">Profile Picture</h3>
+          <h3 className="text-xl font-semibold mb-4 bg-linear-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent">Profile Picture</h3>
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-2">Profile image <span className="text-red-400">*</span></label>
             <input type="file" accept="image/*" onChange={onSelectFile} className="w-full px-4 py-2 bg-white/5 border border-white/20 rounded-lg text-white cursor-pointer file:bg-purple-600 file:text-white file:border-0 file:px-4 file:py-2 file:rounded-md file:cursor-pointer file:font-medium hover:bg-white/10 transition-colors" />
@@ -343,7 +335,7 @@ export default function Register() {
               </div>
               <div className="mt-4 flex items-center gap-3">
                 <label className="text-sm text-gray-300 font-medium">Zoom</label>
-                <input type="range" min={1} max={3} step={0.1} value={zoom} onChange={(e) => setZoom(Number(e.target.value))} className="flex-grow h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-purple-500" />
+                <input type="range" min={1} max={3} step={0.1} value={zoom} onChange={(e) => setZoom(Number(e.target.value))} className="grow h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-purple-500" />
               </div>
               <div className="mt-4">
                 {/* Reset image clears the selected file + crop preview so the user can pick a different file */}
@@ -354,11 +346,11 @@ export default function Register() {
         </div>
 
         <div className="flex items-center justify-between gap-4 mt-8 pt-6 border-t border-white/10">
-          {error && <div className="text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg p-3 flex-grow">{error}</div>}
-          {success && <div className="text-sm text-green-400 bg-green-500/10 border border-green-500/20 rounded-lg p-3 flex-grow">{success}</div>}
-          {!error && !success && <div className="flex-grow"></div>}
+          {error && <div className="text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg p-3 grow">{error}</div>}
+          {success && <div className="text-sm text-green-400 bg-green-500/10 border border-green-500/20 rounded-lg p-3 grow">{success}</div>}
+          {!error && !success && <div className="grow"></div>}
           <div className="flex gap-2">
-            <button disabled={loading} type="submit" className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-600 text-white font-semibold rounded-lg hover:from-purple-600 hover:to-pink-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 cursor-pointer shadow-lg">{loading ? 'Registering...' : 'Register'}</button>
+            <button disabled={loading} type="submit" className="px-6 py-3 bg-linear-to-r from-purple-500 to-pink-600 text-white font-semibold rounded-lg hover:from-purple-600 hover:to-pink-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 cursor-pointer shadow-lg">{loading ? 'Registering...' : 'Register'}</button>
             <button type="button" onClick={() => navigate('/')} className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-lg transition-colors duration-200 cursor-pointer border border-white/20">Cancel</button>
           </div>
         </div>

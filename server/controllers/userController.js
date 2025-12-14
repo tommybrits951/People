@@ -18,7 +18,7 @@ async function registerUser(req, res) {
       gender,
       phone,
       bio,
-      location,
+      street,
       city,
       state,
       postal,
@@ -39,7 +39,6 @@ async function registerUser(req, res) {
       interests,
       skills,
       relationship_status,
-      looking_for_work,
       timezone,
       notifications_enabled,
       profile_public,
@@ -56,8 +55,8 @@ async function registerUser(req, res) {
     const joined = new Date();
     
     // Parse JSON fields if they come as strings
-    const parsedInterests = interests ? (typeof interests === 'string' ? JSON.parse(interests) : interests) : null;
-    const parsedSkills = skills ? (typeof skills === 'string' ? JSON.parse(skills) : skills) : null;
+    
+    
     
     const response = await User.insertUser({
       // Basic Info
@@ -71,7 +70,7 @@ async function registerUser(req, res) {
       gender: gender || "Private",
       phone: phone || null,
       bio: bio || null,
-      location: location || null,
+      street,
       city: city || null,
       state: state || null,
       postal: postal ? parseInt(postal) : null,
@@ -89,10 +88,9 @@ async function registerUser(req, res) {
       github_url: github_url || null,
       
       // Interests & Preferences
-      interests: parsedInterests,
-      skills: parsedSkills,
+      interests,
+      skills,
       relationship_status: relationship_status || null,
-      looking_for_work: looking_for_work === 'true' || looking_for_work === true ? true : false,
       timezone: timezone || null,
       notifications_enabled: notifications_enabled === 'false' || notifications_enabled === false ? false : true,
       profile_public: profile_public === 'false' || profile_public === false ? false : true,
