@@ -17,7 +17,6 @@ export default function PostForm({ onPostSuccess }) {
   
   const { auth, user, posts, setPosts } = useContext(UserContext);
 
-  // Auto-expand textarea as user types
   useEffect(() => {
     const textarea = textareaRef.current;
     if (textarea) {
@@ -40,9 +39,6 @@ export default function PostForm({ onPostSuccess }) {
     setPostText(e.target.value);
   };
 
-  // Handle file selection and add to images array
-
-  // Clear all form data
   const handleClear = (e) => {
     e.preventDefault();
     setPostText("");
@@ -53,7 +49,6 @@ export default function PostForm({ onPostSuccess }) {
     setIsExpanded(false);
   };
 
-  // Submit post to backend
   function handleSubmit() {
     setLoading(true)
     const pkg = new FormData()
@@ -75,7 +70,6 @@ export default function PostForm({ onPostSuccess }) {
       onSubmit={handleSubmit}
       className="w-full max-w-2xl mx-auto bg-white/10 backdrop-blur-xl rounded-2xl shadow-lg border border-white/20 p-6 mb-6"
     >
-      {/* Textarea */}
       <textarea
         ref={textareaRef}
         value={postText}
@@ -88,7 +82,6 @@ export default function PostForm({ onPostSuccess }) {
         }`}
       />
 
-      {/* Image Preview Grid */}
       {images.length > 0 && (
         <div className="mt-4 grid grid-cols-4 gap-3">
           {images.map((file, index) => (
@@ -110,7 +103,6 @@ export default function PostForm({ onPostSuccess }) {
         </div>
       )}
 
-      {/* Error/Success Messages */}
       {error && (
         <div className="mt-3 p-3 bg-red-500/10 text-red-400 rounded-lg text-sm border border-red-500/30">
           {error}
@@ -122,14 +114,9 @@ export default function PostForm({ onPostSuccess }) {
         </div>
       )}
 
-      {/* Form Controls - Visible when expanded */}
       {isExpanded && (
         <div className="mt-4 flex justify-end items-center gap-3">
-          
-          
-          
 
-          {/* Clear Button */}
           <button
             type="button"
             onClick={handleClear}
@@ -138,7 +125,6 @@ export default function PostForm({ onPostSuccess }) {
             Clear
           </button>
 
-          {/* Submit Button */}
           <button
             type="submit"
             disabled={loading}

@@ -4,7 +4,9 @@ const User = require('../models/User')
 
 async function createComment(req, res) {
     try {
-        const {post_id, comment, parent_comment_id, user_id} = req.body;
+        const {post_id} = req.params;
+        const {comment, parent_comment_id, user_id} = req.body;
+
         const user = await User.getById(user_id)
         if (!user) {
             return res.status(401).json({message: "Couldn't verify your user profile."})
@@ -16,9 +18,21 @@ async function createComment(req, res) {
         if (!comment) {
             return res.status(400).json({message: "Missing comment field."})
         }
-        const results = await Comment.insertComment({post_id, comment, parent_comment_id, user_id, time_commented: new Date()})
-        res.status(201).json(results)
+
+        const newComment = await Comment.insertComment({
+            post_id: parseInt(post_id),
+            comment,
+            parent_comment_id,
+            user_id: parseInt(user_id),
+            time_commented: new Date()
+        })
+
+        const comments = await Comment.getCommentsByPostId(post_id)
+        const commentWithUser = comments.find(c => c.comment_id === newComment.comment_id)
+
+        res.status(201).json(commentWithUser || newComment)
     } catch (err) {
+        console.error("createComment error:", err);
         return res.status(500).json({message: err.message || "Server error."})
     }
 }

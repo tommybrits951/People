@@ -7,13 +7,10 @@ const { createOutput, extractImage, saveImage } = require("../config/imageConfig
 async function registerUser(req, res) {
   try {
     const {
-      // Basic Info
       password,
       first_name,
       last_name,
       email,
-      
-      // Profile Info
       dob,
       gender,
       phone,
@@ -23,8 +20,6 @@ async function registerUser(req, res) {
       state,
       postal,
       country,
-      
-      // Social & Professional
       occupation,
       company,
       education,
@@ -34,16 +29,12 @@ async function registerUser(req, res) {
       instagram_url,
       linkedin_url,
       github_url,
-      
-      // Interests & Preferences
       interests,
       skills,
       relationship_status,
       timezone,
       notifications_enabled,
       profile_public,
-      
-      // Image cropping
       x,
       y,
       width,
@@ -53,19 +44,12 @@ async function registerUser(req, res) {
     const { img } = req.files;
     const hashed = bcrypt.hashSync(password, 10);
     const joined = new Date();
-    
-    // Parse JSON fields if they come as strings
-    
-    
-    
+
     const response = await User.insertUser({
-      // Basic Info
       first_name,
       last_name,
       email,
       password: hashed,
-      
-      // Profile Info
       dob,
       gender: gender || "Private",
       phone: phone || null,
@@ -75,8 +59,6 @@ async function registerUser(req, res) {
       state: state || null,
       postal: postal ? parseInt(postal) : null,
       country: country || null,
-      
-      // Social & Professional
       occupation: occupation || null,
       company: company || null,
       education: education || null,
@@ -86,21 +68,15 @@ async function registerUser(req, res) {
       instagram_url: instagram_url || null,
       linkedin_url: linkedin_url || null,
       github_url: github_url || null,
-      
-      // Interests & Preferences
       interests,
       skills,
       relationship_status: relationship_status || null,
       timezone: timezone || null,
       notifications_enabled: notifications_enabled === 'false' || notifications_enabled === false ? false : true,
       profile_public: profile_public === 'false' || profile_public === false ? false : true,
-      
-      // Account Activity
       joined,
       last_login: joined,
       updated_at: joined,
-      
-      // Account Status
       is_verified: false,
       is_active: true,
     });
@@ -109,7 +85,6 @@ async function registerUser(req, res) {
       return res.status(500).json({ message: "Database error." });
     }
 
-    // Handle image upload if provided
     if (img) {
       await createOutput(img);
       const extractedImg = await extractImage(x, y, width, height);

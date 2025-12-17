@@ -26,7 +26,6 @@ async function post(req, res) {
 
 async function getPosts(req, res) {
     try {
-        // Get all posts with user info joined
         const posts = await Post.getAll()
         return res.status(200).json(posts.rows);
     } catch (err) {
@@ -35,7 +34,12 @@ async function getPosts(req, res) {
     }
 }
 
+async function deletePost(req, res) {
+
+}
+
 module.exports = {
     post,
-    getPosts
+    getPosts,
+    deletePost
 }

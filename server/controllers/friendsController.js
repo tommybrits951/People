@@ -16,8 +16,7 @@ async function sendRequest(req, res) {
         if (!friend1 || !friend2) {
             return res.status(400).json({message: "Could not find users."})
         }
-        
-        // Check if request already exists (either direction)
+
         const existing = await Friend.checkExisting(user_id, friend_2_id)
         if (existing) {
             return res.status(400).json({message: "Friend request already exists."})
@@ -68,8 +67,7 @@ async function acceptRequest(req, res) {
         if (!friendRequest) {
             return res.status(404).json({message: "Friend request not found."})
         }
-        
-        // Ensure the current user is the recipient
+
         if (friendRequest.friend_2_id !== user_id) {
             return res.status(403).json({message: "Unauthorized."})
         }
@@ -90,8 +88,7 @@ async function rejectRequest(req, res) {
         if (!friendRequest) {
             return res.status(404).json({message: "Friend request not found."})
         }
-        
-        // Ensure the current user is the recipient or sender
+
         if (friendRequest.friend_2_id !== user_id && friendRequest.friend_1_id !== user_id) {
             return res.status(403).json({message: "Unauthorized."})
         }

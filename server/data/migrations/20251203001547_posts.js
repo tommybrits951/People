@@ -1,7 +1,3 @@
-/**
- * @param { import("knex").Knex } knex
- * @returns { Promise<void> }
- */
 exports.up = function(knex) {
   return knex.schema.createTable("posts", tbl => {
     tbl.bigIncrements("post_id").primary()
@@ -10,8 +6,10 @@ exports.up = function(knex) {
     tbl.bigInteger("user_id").unsigned().references("user_id").inTable("users")
   })
   .createTable("comments", tbl => {
-    tbl.bigInteger("comment_id").primary()
-    tbl.bigInteger("post_id").unsigned().references("post_id").inTable("posts")
+    tbl.bigIncrements("comment_id").primary()
+    tbl.bigInteger("post_id").unsigned().references("post_id").inTable("posts").notNullable()
+    tbl.bigInteger("user_id").unsigned().references("user_id").inTable("users").notNullable()
+    tbl.text("comment").notNullable()
     tbl.bigInteger("parent_comment_id").unsigned().references("comment_id").inTable("comments")
     tbl.dateTime("time_commented").notNullable()
   })
@@ -22,10 +20,6 @@ exports.up = function(knex) {
   })
 };
 
-/**
- * @param { import("knex").Knex } knex
- * @returns { Promise<void> }
- */
 exports.down = function(knex) {
   return knex.schema.dropTableIfExists("post_images").dropTableIfExists("comments").dropTableIfExists("posts")
 };

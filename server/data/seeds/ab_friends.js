@@ -1,9 +1,4 @@
-/**
- * @param { import("knex").Knex } knex
- * @returns { Promise<void> } 
- */
 exports.seed = async function(knex) {
-  // Deletes ALL existing entries
   await knex('friends').del()
   await knex('friends').insert([
   {friend_1_id: 1, friend_2_id: 2, friends_since: new Date(), status: "pending"},

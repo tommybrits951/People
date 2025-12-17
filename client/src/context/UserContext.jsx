@@ -4,13 +4,10 @@ import { setAccessToken, getAccessToken, removeAccessToken } from "../utils/loca
 const UserContext = createContext();
 
 const initRegister = {
-  // Basic Info
   first_name: "",
   last_name: "",
   email: "",
   password: "",
-  
-  // Profile Info
   dob: "",
   gender: "Private",
   phone: "",
@@ -20,8 +17,6 @@ const initRegister = {
   state: "",
   postal: "",
   country: "",
-  
-  // Social & Professional
   occupation: "",
   company: "",
   education: "",
@@ -31,8 +26,6 @@ const initRegister = {
   instagram_url: "",
   linkedin_url: "",
   github_url: "",
-  
-  // Interests & Preferences
   interests: "",
   skills: "",
   relationship_status: "",
@@ -57,7 +50,6 @@ export default function UserProvider({ children }) {
     setAuth(token);
   }
 
-  // Get authorization on refresh
   useEffect(() => {
       !token && axios
         .get("/auth")
@@ -68,7 +60,6 @@ export default function UserProvider({ children }) {
         })
         .catch((err) => console.log(err));
   }, [setAuth, token]);
-  // Decode authorization token into user data
   useEffect(() => {
     auth && axios
       .get("/auth/decode", {
@@ -83,7 +74,6 @@ export default function UserProvider({ children }) {
       .catch((err) => console.log(err));
   }, [auth]);
 
-  // Request to get all posts posted and update list every time a new post is posted
   useEffect(() => {
     !posts && axios.get("/posts", {
       headers: {

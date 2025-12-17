@@ -52,7 +52,6 @@ async function checkFields(req, res, next) {
  last_name = capitalizeFirstLetter(last_name);
  req.body.first_name = first_name;
  req.body.last_name = last_name;
-    // all checks passed - continue to controller
     return next();
 
 }

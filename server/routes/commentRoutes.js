@@ -1,7 +1,8 @@
 const router = require("express").Router()
 const controller = require("../controllers/commentController")
+const {checkAuth} = require("../middleware/checkAuth")
 
-router.post("/", controller.createComment)
-router.get("/:post_id", controller.getComments)
+router.post("/:post_id", checkAuth, controller.createComment)
+router.get("/:post_id", checkAuth, controller.getComments)
 
 module.exports = router

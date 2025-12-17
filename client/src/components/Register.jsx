@@ -48,7 +48,6 @@ export default function Register() {
   
   const validateForm = () => {
     setError('')
-    // Required fields
     if (!registerForm.first_name || !registerForm.last_name || !registerForm.email || !registerForm.password) {
       setError('Please fill out all required fields (First Name, Last Name, Email, Password)')
       return false
@@ -132,8 +131,7 @@ export default function Register() {
         <h2 className="text-4xl font-bold mb-2 bg-linear-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">Create an Account</h2>
         <p className="text-gray-300 mb-8">Join our community today</p>
         <form onSubmit={handleSubmit} className="space-y-8">
-        
-        {/* BASIC INFO SECTION */}
+
         <div className="bg-white/5 rounded-xl p-6 border border-white/10">
           <h3 className="text-xl font-semibold mb-4 text-purple-300">Basic Information</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -158,7 +156,6 @@ export default function Register() {
           </div>
         </div>
 
-        {/* PROFILE DETAILS SECTION */}
         <div className="border-t pt-6">
           <h3 className="text-xl font-semibold mb-4 text-gray-700">Profile Details</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -197,7 +194,6 @@ export default function Register() {
           </div>
         </div>
 
-        {/* LOCATION SECTION */}
         <div className="bg-white/5 rounded-xl p-6 border border-white/10 mt-6">
           <h3 className="text-xl font-semibold mb-4 bg-linear-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">Location</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -226,7 +222,6 @@ export default function Register() {
           </div>
         </div>
 
-        {/* PROFESSIONAL SECTION */}
         <div className="bg-white/5 rounded-xl p-6 border border-white/10 mt-6">
           <h3 className="text-xl font-semibold mb-4 bg-linear-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Professional Information</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -252,7 +247,6 @@ export default function Register() {
           
         </div>
 
-        {/* SOCIAL MEDIA SECTION */}
         <div className="bg-white/5 rounded-xl p-6 border border-white/10 mt-6">
           <h3 className="text-xl font-semibold mb-4 bg-linear-to-r from-pink-400 to-pink-600 bg-clip-text text-transparent">Social Media (Optional)</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -281,7 +275,6 @@ export default function Register() {
           </div>
         </div>
 
-        {/* INTERESTS & SKILLS SECTION */}
         <div className="bg-white/5 rounded-xl p-6 border border-white/10 mt-6">
           <h3 className="text-xl font-semibold mb-4 bg-linear-to-r from-green-400 to-green-600 bg-clip-text text-transparent">Interests & Skills</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -296,7 +289,6 @@ export default function Register() {
           </div>
         </div>
 
-        {/* PASSWORD SECTION */}
         <div className="bg-white/5 rounded-xl p-6 border border-white/10 mt-6">
           <h3 className="text-xl font-semibold mb-4 bg-linear-to-r from-red-400 to-red-600 bg-clip-text text-transparent">Security</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -311,7 +303,6 @@ export default function Register() {
           </div>
         </div>
 
-        {/* PROFILE IMAGE SECTION */}
         <div className="bg-white/5 rounded-xl p-6 border border-white/10 mt-6">
           <h3 className="text-xl font-semibold mb-4 bg-linear-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent">Profile Picture</h3>
           <div>
@@ -319,7 +310,6 @@ export default function Register() {
             <input type="file" accept="image/*" onChange={onSelectFile} className="w-full px-4 py-2 bg-white/5 border border-white/20 rounded-lg text-white cursor-pointer file:bg-purple-600 file:text-white file:border-0 file:px-4 file:py-2 file:rounded-md file:cursor-pointer file:font-medium hover:bg-white/10 transition-colors" />
           </div>
 
-          {/* If an image was selected, render the cropper so the user can select an exact square crop */}
           {imgSrc && (
             <div className="mt-4">
               <div className="relative w-full h-64 bg-black/20 rounded-lg border border-white/20 overflow-hidden">
@@ -338,7 +328,6 @@ export default function Register() {
                 <input type="range" min={1} max={3} step={0.1} value={zoom} onChange={(e) => setZoom(Number(e.target.value))} className="grow h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-purple-500" />
               </div>
               <div className="mt-4">
-                {/* Reset image clears the selected file + crop preview so the user can pick a different file */}
                 <button type="button" onClick={() => { setFile(null); setImgSrc(null); setCroppedAreaPixels(null); setZoom(1); }} className="text-sm text-purple-400 hover:text-purple-300 underline cursor-pointer transition-colors">Reset image</button>
               </div>
             </div>

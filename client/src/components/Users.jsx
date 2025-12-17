@@ -15,7 +15,6 @@ export default function Users() {
   const [friendStatuses, setFriendStatuses] = useState({});
   const [sendingRequest, setSendingRequest] = useState({});
 
-  // Fetch all users on mount
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -28,8 +27,7 @@ export default function Users() {
         setUsers(response.data);
         setFilteredUsers(response.data);
         setError(null);
-        
-        // Fetch friend status for each user
+
         const statuses = {};
         for (const user of response.data) {
           if (user.user_id !== currentUser?.user_id) {
@@ -61,13 +59,11 @@ export default function Users() {
     }
   }, [auth, currentUser]);
 
-  // Filter users based on search query with flexible matching
   useEffect(() => {
     if (searchQuery.trim() === "") {
       setFilteredUsers(users);
     } else {
       const query = searchQuery.toLowerCase();
-      // Split query into individual terms for flexible matching
       const queryTerms = query.split(/\s+/).filter(term => term.length > 0);
       
       const filtered = users.filter((user) => {
@@ -75,8 +71,7 @@ export default function Users() {
         const email = user.email.toLowerCase();
         const firstName = user.first_name.toLowerCase();
         const lastName = user.last_name.toLowerCase();
-        
-        // Check if all query terms match any part of name or email
+
         return queryTerms.every(term => {
           return (
             fullName.includes(term) ||
@@ -126,12 +121,10 @@ export default function Users() {
 
   return (
     <section className="w-full h-full pt-16 px-8 py-8 overflow-auto">
-      {/* Header */}
       <div className="mb-8 max-w-5xl">
         <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">Discover People</h1>
         <p className="text-gray-400">Find and connect with other users</p>
 
-        {/* Search Bar */}
         <div className="mt-6">
           <input
             type="text"
@@ -148,14 +141,12 @@ export default function Users() {
         </div>
       </div>
 
-      {/* Error Message */}
       {error && (
         <div className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 max-w-5xl">
           {error}
         </div>
       )}
 
-      {/* Users List */}
       {filteredUsers.length === 0 ? (
         <div className="text-center py-12">
           <p className="text-xl text-gray-400">
@@ -173,7 +164,6 @@ export default function Users() {
               className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl p-4 hover:bg-white/15 cursor-pointer transition-all duration-200 shadow-lg"
             >
               <div className="flex items-center gap-4">
-                {/* Profile Image */}
                 <div className="flex-shrink-0">
                   <img
                     src={`http://localhost:9000/images/profile/${user.email}.png`}
@@ -186,7 +176,6 @@ export default function Users() {
                   />
                 </div>
 
-                {/* User Info */}
                 <div className="flex-grow">
                   <h3 className="text-lg font-semibold text-white">
                     {user.first_name} {user.last_name}
@@ -197,7 +186,6 @@ export default function Users() {
                   </p>
                 </div>
 
-                {/* Current User Badge or Friend Request Button */}
                 {currentUser && user.user_id === currentUser.user_id ? (
                   <div className="flex-shrink-0">
                     <span className="inline-block px-3 py-1 bg-blue-500/20 border border-blue-500/30 text-blue-300 text-xs font-semibold rounded-full">
@@ -229,7 +217,6 @@ export default function Users() {
                   </div>
                 )}
 
-                {/* Arrow Icon */}
                 <div className="flex-shrink-0 text-gray-400">
                   <svg
                     className="h-6 w-6"
